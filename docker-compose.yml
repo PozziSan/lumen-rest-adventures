@@ -30,7 +30,7 @@ services:
       context: .
       dockerfile: Dockerfile_php
     volumes:
-      - ./lumen:/var/www/html..
+      - ./lumen:/var/www/html
     working_dir: /var/www/html/app/public
     command: php-fpm
     links:
