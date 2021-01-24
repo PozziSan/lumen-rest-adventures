@@ -13,6 +13,25 @@
 |
 */
 
+use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\UsersController;
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
+});
+
+$router->group(['prefix' => 'users'], function () use ($router) {
+    $router->get('/', 'UsersController@index');
+    $router->get('/{id}', 'UsersController@show');
+    $router->post('/', 'UsersController@store');
+    $router->put('/{id}', 'UsersController@update');
+    $router->delete('/{id}', 'UsersController@destroy');
+});
+
+$router->group(['prefix' => 'messages'], function () use ($router) {
+   $router->get('/', 'MessagesController@index');
+   $router->get('/{id}', 'MessagesController@show');
+   $router->post('/', 'MessagesController@store');
+   $router->put('/{id}', 'MessagesController@update');
+   $router->delete('/{id}', 'MessagesController@destroy');
 });
