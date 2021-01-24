@@ -18,15 +18,14 @@ trait RESTActions
 
     public function index(): JsonResponse
     {
-        $model = self::MODEL;
+        $entities = $this->_model::all();
 
-        return $this->respond(Response::HTTP_OK, $model::all());
+        return $this->respond(Response::HTTP_OK, $entities);
     }
 
     public function show($id): JsonResponse
     {
-        $model = self::MODEL;
-        $entity = $model::find($id);
+        $entity = $this->_model::find($id);
 
         if (isnull($entity)) {
             return $this->respond(Response::HTTP_NOT_FOUND);
@@ -37,20 +36,16 @@ trait RESTActions
 
     public function store(Request $request): JsonResponse
     {
-        $model = self::MODEL;
-
-        $this->validate($request, $model::$rules);
-        $created_entity = $model::create($request->all());
+        $this->validate($request, $this->_model::$rules);
+        $created_entity = $this->_model::create($request->all());
 
         return $this->respond(Response::HTTP_CREATED, $created_entity);
     }
 
     public function update(Request $request, $id): JsonResponse
     {
-        $model = self::MODEL;
-
-        $this->validate($request, $model::$rules);
-        $entity = $model::find($id);
+        $this->validate($request, $this->_model::$rules);
+        $entity = $this->_model::find($id);
 
         if (isnull($entity)) {
             return $this->respond(Response::HTTP_NOT_FOUND);
@@ -63,14 +58,13 @@ trait RESTActions
 
     public function destroy($id): JsonResponse
     {
-        $model = self::MODEL;
-        $entity = $model::find($id);
+        $entity = $this->_model::find($id);
 
         if (isNull($entity)) {
             return $this->respond(Response::HTTP_NOT_FOUND);
         }
 
-        $model::destroy($id);
+        $this->_model::destroy($id);
 
         return $this->respond(Response::HTTP_NO_CONTENT);
 
